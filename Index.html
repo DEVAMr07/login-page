@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --ring: rgba(37, 99, 235, 0.35);
+      --border: #e5e7eb;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(60rem 60rem at 80% -10%, #e0e7ff, transparent),
+                  radial-gradient(50rem 50rem at -10% 110%, #d1fae5, transparent),
+                  var(--bg);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      padding: 2rem;
+    }
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+      overflow: hidden;
+      animation: floatIn 500ms ease-out both;
+    }
+    @keyframes floatIn { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .header { padding: 1.25rem 1.25rem 0.5rem; text-align: center; }
+    .title { margin: 0; font-size: 1.5rem; font-weight: 700; letter-spacing: .2px; }
+    .subtitle { margin: .25rem 0 1rem; color: var(--muted); font-size: .95rem; }
+
+    form { padding: 1.25rem; display: grid; gap: 1rem; }
+    .field { display: grid; gap: .4rem; }
+    label { font-size: .9rem; color: var(--muted); }
+
+    .input {
+      width: 100%;
+      padding: .8rem .9rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      outline: none;
+      transition: box-shadow .15s, border-color .15s;
+      font-size: 1rem;
+    }
+    .input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
+    .input:invalid[aria-invalid="true"] { border-color: var(--danger); }
+
+    .password-wrap { position: relative; }
+    .toggle {
+      position: absolute; right: .5rem; top: 50%; transform: translateY(-50%);
+      background: none; border: 0; cursor: pointer; padding: .4rem .5rem; color: var(--muted);
+      border-radius: 8px;
+    }
+    .toggle:focus { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .checkbox { display: inline-flex; align-items: center; gap: .5rem; font-size: .9rem; color: var(--muted); }
+    .link { color: var(--primary); text-decoration: none; font-size: .9rem; }
+    .link:hover { text-decoration: underline; }
+
+    .btn {
+      width: 100%;
+      padding: .85rem 1rem;
+      border: 0;
+      border-radius: 12px;
+      background: var(--primary);
+      color: white; font-weight: 600; font-size: 1rem; cursor: pointer;
+      transition: background .15s, transform .04s;
+    }
+    .btn:hover { background: var(--primary-hover); }
+    .btn:active { transform: translateY(1px); }
+
+    .footer { padding: 0 1.25rem 1.25rem; text-align: center; color: var(--muted); font-size: .9rem; }
+
+    .note { padding: .75rem 1rem; margin: 0 1.25rem 1rem; background: #f8fafc; border: 1px dashed var(--border); border-radius: 12px; color: var(--muted); font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <main class="card" role="main" aria-labelledby="loginTitle">
+    <div class="header">
+      <h1 id="loginTitle" class="title">We Welcome you</h1>
+      <p class="subtitle">Log-in to your account</p>
+    </div>
+
+    <p class="note" aria-live="polite">Welcome to Devam's Site.</p>
+
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <label for="email">Email</label>
+        <input class="input" type="email" id="email" name="email" placeholder="you@example.com" required aria-invalid="false" />
+      </div>
+
+      <div class="field password-wrap">
+        <label for="password">Password</label>
+        <input class="input" type="password" id="password" name="password" placeholder="••••••••" minlength="6" required aria-invalid="false" />
+        <button class="toggle" type="button" aria-label="Toggle password visibility" title="Show/Hide password" onclick="togglePassword()">👁️</button>
+      </div>
+
+      <div class="row">
+        <label class="checkbox"><input type="checkbox" id="remember" /> Remember me</label>
+        <a class="link" href="#" onclick="alert('Reset flow not implemented in demo.')">Forgot password?</a>
+      </div>
+
+      <button class="btn" type="submit">Log in</button>
+    </form>
+
+    <div class="footer">
+      <span>Don’t have an account?</span>
+      <a class="link" href="#" onclick="alert('Sign up not implemented in demo.')">Sign up</a>
+    </div>
+  </main>
+
+  <script>
+    function togglePassword() {
+      const input = document.getElementById('password');
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const email = document.getElementById('email');
+      const password = document.getElementById('password');
+
+      // simple client-side validation feedback
+      let valid = true;
+      if (!email.value || !email.checkValidity()) { email.setAttribute('aria-invalid', 'true'); valid = false; }
+      else { email.setAttribute('aria-invalid', 'false'); }
+
+      if (!password.value || password.value.length < 6) { password.setAttribute('aria-invalid', 'true'); valid = false; }
+      else { password.setAttribute('aria-invalid', 'false'); }
+
+      if (!valid) return;
+
+      // demo success state
+      alert('Login successful (demo). Replace with your own submit handler.');
+    });
+  </script>
+</body>
+</html>
